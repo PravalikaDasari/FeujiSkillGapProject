@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaRepositories(basePackages = {"com.feuji.referenceservice"})
 @EnableTransactionManagement
-
 public class JPAConfig {
 	
 

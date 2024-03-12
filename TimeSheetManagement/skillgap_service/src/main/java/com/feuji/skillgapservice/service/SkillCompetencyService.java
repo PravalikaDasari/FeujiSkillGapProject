@@ -4,18 +4,20 @@ import java.util.List;
 
 import com.feuji.skillgapservice.bean.SkillCompetencyBean;
 import com.feuji.skillgapservice.dto.PaginationDto;
+import com.feuji.skillgapservice.exception.RecordNotFoundException;
 
 public interface SkillCompetencyService {
-	public void save(SkillCompetencyBean SkillCompetency);
+	
+	public void saveSkillCompetency(SkillCompetencyBean skillCompetencyBean) throws IllegalArgumentException ;
 
-	public SkillCompetencyBean updateAllRecords(SkillCompetencyBean skillCompetencyBean);
+	public SkillCompetencyBean updateAllSkillCompetencyRecords(SkillCompetencyBean skillCompetencyBean)
+			throws RecordNotFoundException;
+	public SkillCompetencyBean findSkillCompetencyByUuid(String uuid) throws RecordNotFoundException ;
 
-	public SkillCompetencyBean findByUuid(String uuid);
+	public SkillCompetencyBean getSkillCompetencyBySkillId(int skillId);
 
-	public SkillCompetencyBean getBySkillId(int skillId);
+	public List<SkillCompetencyBean> findSkillCompetencyByTechId(int technicalCatId) throws RecordNotFoundException ;
 
-	public List<SkillCompetencyBean> findByTechId(int technicalCatId);
-
-	public PaginationDto getAllEmployeeSkillsBySkillIds(int[] skillId,int page ,int size);
+	public PaginationDto getAllEmployeeSkillsBySkillIds(int[] skillId, int page, int size) throws RecordNotFoundException;
 
 }
