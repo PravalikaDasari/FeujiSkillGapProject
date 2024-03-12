@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.feuji.skillgapservice.bean.SkillBean;
 import com.feuji.skillgapservice.dto.SkillNamesDto;
+import com.feuji.skillgapservice.exception.RecordNotFoundException;
 import com.feuji.skillgapservice.exception.SkillNotFoundException;
 import com.feuji.skillgapservice.service.SkillService;
 
@@ -32,76 +33,134 @@ public class SkillController {
 	@Autowired
 	private SkillService skillService;
 
-	// to insert values
+
+	
+	/**
+	 * Saves a new SkillBean record.
+	 *
+	 * @param bean The SkillBean object to save.
+	 * @return A ResponseEntity containing the saved SkillBean object and HTTP status CREATED.
+	 * @throws IllegalArgumentException If the save operation fails.
+	 */
 	@PostMapping("/insert")
-	public ResponseEntity<SkillBean> saveSkillData(@RequestBody SkillBean bean) {
-		log.info("save controller start");
-		System.out.println(bean);
+	public ResponseEntity<SkillBean> saveSkill(@RequestBody SkillBean bean) {
+		log.info("Save Start:Save saveSkillData Details");
 		try {
 			SkillBean skill = skillService.saveSkill(bean);
-
-			log.info("save controller end");
+			log.info("Save End:Saved saveSkillData Details");
 			return new ResponseEntity<SkillBean>(skill, HttpStatus.CREATED);
 		} catch (NullPointerException exception) {
-			throw new NullPointerException(exception.getMessage());
+			throw new IllegalArgumentException("failed to save records");
 		}
 	}
 
+	
+	
+	/**
+	 * Updates the details of a SkillBean record.
+	 *
+	 * @param uuid The UUID of the SkillBean record to update.
+	 * @param skillBean The updated SkillBean object.
+	 * @return A ResponseEntity containing the updated SkillBean object and HTTP status OK.
+	 * @throws SkillNotFoundException If the SkillBean record with the provided UUID is not found.
+	 */
 	@PutMapping("/updateSkill")
-	private ResponseEntity<SkillBean> updateDetails(@RequestParam String uuid, @RequestBody SkillBean skillBean) {
-		skillBean.setUuid(uuid);
-		SkillBean updatedSkill = skillService.updateDetails(skillBean);
-		return ResponseEntity.ok(updatedSkill);
+	public ResponseEntity<SkillBean> updateSkillDetails(@RequestParam String uuid, @RequestBody SkillBean skillBean) {
+		log.info("Update Start:Update Skills Details");
+		try {
+			skillBean.setUuid(uuid);
+			SkillBean updatedSkill = skillService.updateSkillDetails(skillBean);
+			log.info("Update End:Updated Skills Details");
+			return ResponseEntity.ok(updatedSkill);
+		} catch (Exception e) {
+			throw new SkillNotFoundException("failed to update records");
+		}
 	}
 
-//-----------------------fetch by uuid---------------------------
+	
+	/**
+	 * Retrieves a SkillBean record from the database based on its UUID.
+	 *
+	 * @param uuid The UUID of the SkillBean record to retrieve.
+	 * @return A ResponseEntity containing the retrieved SkillBean object and HTTP status FOUND.
+	 * @throws SkillNotFoundException If the SkillBean record with the provided UUID is not found.
+	 */
 	@GetMapping(path = "/getByUuid")
-	public ResponseEntity<SkillBean> getAdmin(@RequestParam String uuid) throws SkillNotFoundException {
-
+	public ResponseEntity<SkillBean> getAdmin(@RequestParam String uuid) {
+		log.info("getByUuid Start:Fetching Uuid");
 		SkillBean bean = null;
 		try {
-			bean = skillService.getByUuid(uuid);
+			bean = skillService.getSkillByUuid(uuid);
+			log.info("getByUuid End:Fetched Uuid");
+			return new ResponseEntity<>(bean, HttpStatus.FOUND);
 		} catch (SkillNotFoundException e) {
-			throw new SkillNotFoundException(e.getMessage());
+			throw new SkillNotFoundException("faild to fetch Uuid records");
 		}
-
-		return new ResponseEntity<>(bean, HttpStatus.FOUND);
 	}
+	
 
+	/**
+	 * Retrieves a list of SkillBean records from the database based on a technical category ID.
+	 *
+	 * @param categoryId The ID of the technical category to filter the SkillBean records.
+	 * @return A ResponseEntity containing a list of SkillBean objects and HTTP status OK.
+	 * @throws SkillNotFoundException If no SkillBean records are found for the provided technical category ID.
+	 */
 	@GetMapping(path = "/getAll/{categoryId}")
-	public ResponseEntity<List<SkillBean>> getAllSkillsByTechnicalCategory(@PathVariable int categoryId) {
-		log.info("controller-getAllSkillsByTechnicalCategory");
-		List<SkillBean> list = skillService.getSkillsByTechCategoryId(categoryId);
-		return new ResponseEntity<>(list, HttpStatus.OK);
-
+	public ResponseEntity<List<SkillBean>> getSkillsByTechCategoryId(@PathVariable int categoryId) {
+		log.info("GetAll Start:Fetching All Skills");
+		try {
+			List<SkillBean> list = skillService.getSkillsByTechCategoryId(categoryId);
+			log.info("GetAll End:Fetched All Skills");
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			throw new SkillNotFoundException("failed to fetch Skills records");
+		}
 	}
 
-	@GetMapping(path="/getBySkillId/{skillId}")
-	public ResponseEntity<SkillBean> getBySkillId(@PathVariable int skillId)
-	{
+	
+	/**
+	 * Retrieves a SkillBean record from the database based on its ID.
+	 *
+	 * @param skillId The ID of the SkillBean record to retrieve.
+	 * @return A ResponseEntity containing the retrieved SkillBean object and HTTP status FOUND.
+	 * @throws SkillNotFoundException If the SkillBean record with the provided ID is not found.
+	 */
+	@GetMapping(path = "/getBySkillId/{skillId}")
+	public ResponseEntity<SkillBean> getSkillBySkillId(@PathVariable int skillId) {
+		log.info("GetBySkillId Start:Fetching Id Details");
 		SkillBean bean = null;
 		try {
-			bean=skillService.getBySkillId(skillId);
-		}catch(SkillNotFoundException e)
-		{
-			throw new SkillNotFoundException(e.getMessage());
+			bean = skillService.getSkillBySkillId(skillId);
+			log.info("GetBySkillId End:Fetched Id Details");
+			return new ResponseEntity<>(bean, HttpStatus.FOUND);
+		} catch (SkillNotFoundException e) {
+			throw new SkillNotFoundException("faild to fetch Id records");
 		}
-		return new ResponseEntity<>(bean, HttpStatus.FOUND);
 	}
 	
-	@GetMapping(path="/getSkillNames/{skillIds}")
-	public ResponseEntity<List<SkillNamesDto>> getSkillNames(@PathVariable int[] skillIds)
-	{
-		List<SkillNamesDto> skills =new ArrayList<>();
+	
+	
+	/**
+	 * Retrieves a list of SkillNamesDto objects from the database based on an array of skill IDs.
+	 *
+	 * @param skillIds An array of skill IDs to retrieve SkillNamesDto objects.
+	 * @return A ResponseEntity containing a list of SkillNamesDto objects and HTTP status OK.
+	 * @throws RecordNotFoundException If no records are found for the provided skill IDs.
+	 */
+	@GetMapping(path = "/getSkillNames/{skillIds}")
+	public ResponseEntity<List<SkillNamesDto>> getSkillNamesBySkillId(@PathVariable int[] skillIds)
+			throws RecordNotFoundException {
+		log.info("GetSkillNames Start:Fetching SkillNames");
+		List<SkillNamesDto> skills = new ArrayList<>();
 		try {
-			skills =skillService.getSkillNames(skillIds);
-		}catch(Exception e)
-		{
-			return new ResponseEntity<List<SkillNamesDto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			skills = skillService.getSkillNamesBySkillId(skillIds);
+			log.info("GetSkillNames End:Fetched SkillNames");
+			return new ResponseEntity<List<SkillNamesDto>>(skills, HttpStatus.OK);
+		} catch (Exception e) {
+			throw new RecordNotFoundException("failed to fetch record");
 		}
-		return  new ResponseEntity<List<SkillNamesDto>>(skills,HttpStatus.OK);
 	}
-	
 
 
 }
