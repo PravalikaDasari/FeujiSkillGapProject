@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.skillset.dto.GapDto;
 import com.skillset.servic.SkillSetService;
 
-
 @RestController
 public class SkillSetController {
 	
 	@Autowired
-	private SkillSetService service;
+	private SkillSetService skillSetservice;
 	
 	@GetMapping("/fetch/{email}/{skillCategoryId}")
 	public ResponseEntity<List<GapDto>> fetchSkillDetails(@PathVariable String email, @PathVariable Integer skillCategoryId) {
-	    List<GapDto> list = service.fetchSkillDto(email,skillCategoryId);
+	   
+		List<GapDto> list = skillSetservice.fetchSkillDto(email,skillCategoryId);
 	    if (list.isEmpty()) {
-	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); // or any other appropriate response
+	        return new ResponseEntity<>(list,HttpStatus.NOT_FOUND); 
 	    }
 	    return new ResponseEntity<>(list, HttpStatus.OK);
 	}

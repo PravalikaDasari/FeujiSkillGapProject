@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.feuji.employeeservice.bean.EmployeeBean;
 import com.feuji.employeeservice.entity.EmployeeEntity;
+import com.feuji.employeeservice.exception.RecordsNotFoundException;
 import com.feuji.employeeservice.service.EmployeeService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,34 +28,46 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
-	
+
 	@PostMapping("/save")
-	public ResponseEntity<EmployeeEntity> saveEmployee(@RequestBody EmployeeBean employeeBean) {
+	public ResponseEntity<EmployeeEntity> saveEmployee(@RequestBody EmployeeBean employeeBean)
+			throws NullPointerException {
+		log.info("Save Start:Saving Employee Details");
 		try {
-			log.info("Saving Employee started: {}", employeeBean);
 			EmployeeEntity saveEmployeeEntity = employeeService.saveEmployee(employeeBean);
-			return new ResponseEntity<>(saveEmployeeEntity, HttpStatus.CREATED);
-		} catch (Exception e) {
-			log.error("Error occurred while saving employee: {}", e.getMessage());
+			log.info("Save End:Saved Employee Details");
+			return new ResponseEntity<>(saveEmployeeEntity, HttpStatus.OK);
+		} catch (NullPointerException e) {
+			log.info("Error occurred while saving employee details" + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/getAll")
-	public ResponseEntity<List<EmployeeEntity>> getAllEmployees(){
-		List<EmployeeEntity> accountEntities=employeeService.getAllEmployees();
-		log.info("Fetching employee details {}", accountEntities);
-		ResponseEntity<List<EmployeeEntity>> responseEntity = new ResponseEntity<List<EmployeeEntity>>(accountEntities,
-				HttpStatus.OK);
-		return responseEntity;
+	public ResponseEntity<List<EmployeeEntity>> getAllEmployees() throws RecordsNotFoundException {
+		log.info("GetAll Start: Fetching All Employee Details");
+		try {
+			List<EmployeeEntity> employeeEntities = employeeService.getAllEmployees();
+				log.info("GetAll End: Fetching All Employee Details");
+				return new ResponseEntity<>(employeeEntities, HttpStatus.OK);
+		}
+		catch(RecordsNotFoundException e) {
+			log.error("Error occurred while fetching all employee details", e.getMessage());
+			throw new RecordsNotFoundException("Failed to get all employee records");
+		}
 	}
-	
-	@GetMapping("/getByEmail/{email}")
-	public ResponseEntity<EmployeeBean> getByEmail(@PathVariable String email)
-	{
-		log.info(email+" email id");
-		EmployeeBean bean =employeeService.findByEmail(email);
-		return new ResponseEntity<EmployeeBean>(bean,HttpStatus.OK);
+
+	@GetMapping("/getByEmail/{employeeEmail}")
+	public ResponseEntity<EmployeeBean> getByEmail(@PathVariable String employeeEmail) {
+		log.info("GetByEmail Start:Fetching employee Details" + employeeEmail);
+		EmployeeBean employeebean =null;
+		try {
+			employeebean = employeeService.findByEmail(employeeEmail);
+			log.info("GetByEmail End:Fetching employee Details");
+			return new ResponseEntity<EmployeeBean>(employeebean, HttpStatus.OK);
+		} catch (RecordsNotFoundException e) {
+			log.info("No records found for email: " + e.getMessage());
+			return new ResponseEntity<EmployeeBean>(employeebean, HttpStatus.NOT_FOUND);
+		}
 	}
-	
 }

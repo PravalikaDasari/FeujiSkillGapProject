@@ -1,84 +1,157 @@
 package com.skillset.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class GapDto {
 
-	   private Integer employeeId;
-	   private String employeeName;
-	   private String employeeEmail;
-	   private String designation;
-	   private String email;
-	    private String skillName;
-	    private String description;
-	    private Integer skillCategoryId;
-	    private Integer exCompetencyLevelId;
-	    private Integer acCompetencyLevelId;
-	    private String exReferenceDetailsValues;
-	    private String acReferenceDetailsValues;
-	   
-	    
-//
-//		List<EmployeeSkillDto> l = new ArrayList();
-//
-//		EmployeeSkillDto t = new EmployeeSkillDto();
-//		t.setFirstName("supriya");
-//		t.setDesignation("sa");
-//		t.setCompetencyLevelId(1);
-//		t.setSkillName("python");
-//
-//		EmployeeSkillDto t1 = new EmployeeSkillDto();
-//		t.setFirstName("supriya");
-//		t.setDesignation("sa");
-//		t.setCompetencyLevelId(1);
-//		t.setSkillName("html");
-//
-//		EmployeeSkillDto t2 = new EmployeeSkillDto();
-//		t.setFirstName("supriya");
-//		t.setDesignation("sa");
-//		t.setCompetencyLevelId(1);
-//		t.setSkillName("java");
-//
-//		l.add(t);
-//		l.add(t1);
-//
-//		l.add(t2);
-//
-//	 
-//	 
-//		Map<String, EmployeeSkillDetailsDto> m = new HashMap<>();
-//
-//		for (EmployeeSkillDto f : l) {
-//
-//			String empName = f.getFirstName();
-//			if (m.get(empName) == null) {
-//				EmployeeSkillDetailsDto dto = new EmployeeSkillDetailsDto();
-//				dto.setFirstnName(empName);
-//				dto.setEmployeeId(f.getEmployeeId());
-//				dto.setDesignation(f.getDesignation());
-//				List<String> skillNamelist = new ArrayList();
-//
-//				skillNamelist.add(f.getSkillName());
-//				m.put(empName, dto);
-//			} else {
-//				EmployeeSkillDetailsDto dto = m.get(empName);
-//				dto.setFirstnName(empName);
-//				dto.setDesignation(f.getDesignation());
-//				List<String> skillNamelist = new ArrayList();
-//
-//				skillNamelist.add(f.getSkillName());
-//			}
-//
-//		}
-//
-//	 
-//	}
+	private String firstName;
+	private String middleName;
+	private String lastName;
+	private Integer employeeId;
+	private String email;
+	private String designation;
+	private String skillName;
+	private String description;
+	private Integer exCompetencyLevelId;
+	private Integer acCompetencyLevelId;
+	private String exReferenceDetailsValues;
+	private String acReferenceDetailsValues;	
+	private Integer skillCategoryId;
+	private String employeeName;
+
+	public GapDto() {
+		super();
+	}
+
+	public GapDto(String firstName, String middleName, String lastName, Integer employeeId, String email,
+			String designation, String skillName, String description, Integer exCompetencyLevelId,
+			Integer acCompetencyLevelId, String exReferenceDetailsValues, String acReferenceDetailsValues) {
+		super();
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.employeeId = employeeId;
+		this.email = email;
+		this.designation = designation;
+		this.skillName = skillName;
+		this.description = description;
+		this.exCompetencyLevelId = exCompetencyLevelId;
+		this.acCompetencyLevelId = acCompetencyLevelId;
+		this.exReferenceDetailsValues = exReferenceDetailsValues;
+		this.acReferenceDetailsValues = acReferenceDetailsValues;
+		this.employeeName=firstName+" "+middleName+" "+lastName;
+	}
+
+
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public Integer getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(Integer employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSkillName() {
+		return skillName;
+	}
+
+	public void setSkillName(String skillName) {
+		this.skillName = skillName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getSkillCategoryId() {
+		return skillCategoryId;
+	}
+
+	public void setSkillCategoryId(Integer skillCategoryId) {
+		this.skillCategoryId = skillCategoryId;
+	}
+
+	public Integer getExCompetencyLevelId() {
+		return exCompetencyLevelId;
+	}
+
+	public void setExCompetencyLevelId(Integer exCompetencyLevelId) {
+		this.exCompetencyLevelId = exCompetencyLevelId;
+	}
+
+	public Integer getAcCompetencyLevelId() {
+		return acCompetencyLevelId;
+	}
+
+	public void setAcCompetencyLevelId(Integer acCompetencyLevelId) {
+		this.acCompetencyLevelId = acCompetencyLevelId;
+	}
+
+	public String getExReferenceDetailsValues() {
+		return exReferenceDetailsValues;
+	}
+
+	public void setExReferenceDetailsValues(String exReferenceDetailsValues) {
+		this.exReferenceDetailsValues = exReferenceDetailsValues;
+	}
+
+	public String getAcReferenceDetailsValues() {
+		return acReferenceDetailsValues;
+	}
+
+	public void setAcReferenceDetailsValues(String acReferenceDetailsValues) {
+		this.acReferenceDetailsValues = acReferenceDetailsValues;
+	}
+
 }
