@@ -11,13 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.feuji.skillgapservice.bean.SkillCompetencyBean;
+import com.feuji.skillgapservice.commonconstants.CommonConstants;
 import com.feuji.skillgapservice.dto.EmployeeEntityDto;
 import com.feuji.skillgapservice.dto.EmployeesSkillsListDto;
 import com.feuji.skillgapservice.dto.PaginationDto;
 import com.feuji.skillgapservice.dto.SkillsBean;
 import com.feuji.skillgapservice.entity.SkillCompetencyEntity;
 import com.feuji.skillgapservice.exception.RecordNotFoundException;
-import com.feuji.skillgapservice.exception.SkillNotFoundException;
 import com.feuji.skillgapservice.repository.EmployeeRepository;
 import com.feuji.skillgapservice.repository.SkillCompetencyRepository;
 import com.feuji.skillgapservice.service.SkillCompetencyService;
@@ -33,15 +33,7 @@ public class SkillCompetencyServiceImpl implements SkillCompetencyService {
 
 	@Autowired
 	EmployeeRepository employeeRepository;
-	
-	
 
-	/**
-	 * Converts a SkillCompetencyBean object to a SkillCompetencyEntity object.
-	 *
-	 * @param skillCompetencyBean The SkillCompetencyBean object to convert.
-	 * @return The converted SkillCompetencyEntity object.
-	 */	
 	public SkillCompetencyEntity convertBeanToEntity(SkillCompetencyBean skillCompetencyBean) {
 		try {
 			log.info("convert bean to entity method started");
@@ -61,22 +53,12 @@ public class SkillCompetencyServiceImpl implements SkillCompetencyService {
 			skillCompetencyEntity.setCreatedOn(skillCompetencyBean.getCreatedOn());
 			skillCompetencyEntity.setModifiedBy(skillCompetencyBean.getModifiedBy());
 			return skillCompetencyEntity;
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Failed to convert bean to entity", e);
 		}
-		catch (Exception e) {
-	        throw new IllegalArgumentException("Failed to convert bean to entity", e);
-		}
-		
+
 	}
 
-	
-	
-	
-	/**
-	 * Converts a SkillCompetencyEntity object to a SkillCompetencyBean object.
-	 *
-	 * @param skillCompetencyEntity The SkillCompetencyEntity object to convert.
-	 * @return The converted SkillCompetencyBean object.
-	 */	
 	public SkillCompetencyBean convertEntityToBean(SkillCompetencyEntity skillCompetencyEntity) {
 		try {
 			SkillCompetencyBean skillCompetencyBean = new SkillCompetencyBean();
@@ -95,161 +77,123 @@ public class SkillCompetencyServiceImpl implements SkillCompetencyService {
 			skillCompetencyBean.setCreatedOn(skillCompetencyEntity.getCreatedOn());
 			skillCompetencyBean.setModifiedBy(skillCompetencyEntity.getModifiedBy());
 			return skillCompetencyBean;
-		}
-		catch (Exception e) {
-	        throw new IllegalArgumentException("Failed to convert bean to entity", e);
-		}
-		
-	}
-
-	
-	
-	/**
-	 * Saves a SkillCompetencyBean object into the database.
-	 *
-	 * @param skillCompetencyBean The SkillCompetencyBean object to save.
-	 * @throws IllegalArgumentException If the provided SkillCompetencyBean object is null.
-	 */
-	@Override
-	public void saveSkillCompetency(SkillCompetencyBean skillCompetencyBean) throws IllegalArgumentException {
-		log.info("Service save Method Start");
-		try {
-			if (skillCompetencyBean != null) {
-				SkillCompetencyEntity convertBeanToEntity = convertBeanToEntity(skillCompetencyBean);
-
-				if (convertBeanToEntity.getModifiedOn() == null) {
-					convertBeanToEntity.setModifiedOn(new Timestamp(System.currentTimeMillis()));
-				}
-				if (convertBeanToEntity.getCreatedOn() == null) {
-					convertBeanToEntity.setCreatedOn(new Timestamp(System.currentTimeMillis()));
-				}
-				competencyRepository.save(convertBeanToEntity);
-				log.info("Service save Method End");
-			}
 		} catch (Exception e) {
-			throw new IllegalArgumentException("failed to save records");
+			throw new IllegalArgumentException("Failed to convert bean to entity", e);
 		}
+
 	}
 
-	
-	
-	/**
-	 * Updates all SkillCompetencyBean records in the database with the provided SkillCompetencyBean object.
-	 *
-	 * @param skillCompetencyBean The SkillCompetencyBean object containing the updated records.
-	 * @return The updated SkillCompetencyBean object.
-	 * @throws RecordNotFoundException If no records are found in the database.
-	 */
+	@Override
+	public void saveSkillCompetency(SkillCompetencyBean skillCompetencyBean) {
+		log.info("Service save Method Start");
+		if (skillCompetencyBean != null) {
+			SkillCompetencyEntity convertBeanToEntity = convertBeanToEntity(skillCompetencyBean);
+
+			if (convertBeanToEntity.getModifiedOn() == null) {
+				convertBeanToEntity.setModifiedOn(new Timestamp(System.currentTimeMillis()));
+			}
+			if (convertBeanToEntity.getCreatedOn() == null) {
+				convertBeanToEntity.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+			}
+			competencyRepository.save(convertBeanToEntity);
+			log.info("Service save Method End");
+		} else {
+			throw new NullPointerException("SkillCompetencyBean is null");
+		}
+
+	}
+
 	@Override
 	public SkillCompetencyBean updateAllSkillCompetencyRecords(SkillCompetencyBean skillCompetencyBean)
 			throws RecordNotFoundException {
 		log.info("Service updateAllRecords Method Start");
-		try {
+		if (skillCompetencyBean != null) {
 			SkillCompetencyEntity beanToEntity = convertBeanToEntity(skillCompetencyBean);
 			if (beanToEntity.getModifiedOn() == null) {
 				beanToEntity.setModifiedOn(new Timestamp(System.currentTimeMillis()));
 			}
 			SkillCompetencyEntity save = competencyRepository.save(beanToEntity);
 			SkillCompetencyBean entityToBean = convertEntityToBean(save);
-			log.info("Service updateAllRecords Method End");
-			return entityToBean;
-		} catch (Exception e) {
-			throw new RecordNotFoundException("failed to update records");
+			if (entityToBean != null) {
+				log.info("Service updateAllRecords Method End");
+				return entityToBean;
+			} else {
+				throw new RecordNotFoundException("skillCompetency record is not found");
+			}
+		} else {
+			throw new NullPointerException("skillCompetencyBean is null");
 		}
+
 	}
 
-	
-	
-	/**
-	 * Retrieves a SkillCompetencyBean object from the database based on its UUID.
-	 *
-	 * @param uuid The UUID of the SkillCompetencyBean object to retrieve.
-	 * @return The retrieved SkillCompetencyBean object.
-	 * @throws RecordNotFoundException If the SkillCompetencyBean object with the provided UUID is not found.
-	 */
 	@Override
 	public SkillCompetencyBean findSkillCompetencyByUuid(String uuid) throws RecordNotFoundException {
 		log.info("Service findByUuid Method Start");
-		try {
+		if (uuid != null) {
 			SkillCompetencyEntity skillEntity = competencyRepository.findByUuid(uuid)
 					.orElseThrow(() -> new IllegalArgumentException("Skill not found with id-" + uuid));
-			log.info("Service findByUuid Method End");
-			return convertEntityToBean(skillEntity);
-		} catch (Exception e) {
-			throw new RecordNotFoundException("failed to fetch records");
-		}
-
-	}
-
-	
-	
-	/**
-	 * Retrieves a SkillCompetencyBean object from the database based on its skill ID.
-	 *
-	 * @param skillId The ID of the skill.
-	 * @return The retrieved SkillCompetencyBean object.
-	 * @throws SkillNotFoundException If the SkillCompetencyBean object with the provided skill ID is not found.
-	 */
-	@Override
-	public SkillCompetencyBean getSkillCompetencyBySkillId(int skillId) {
-		log.info("Service getBySkillId Method Start");
-		try {
-			SkillCompetencyEntity entity = competencyRepository.findBySkillId(skillId);
-			log.info("Service getBySkillId Method End");
-			return convertEntityToBean(entity);
-		} catch (Exception e) {
-			throw new SkillNotFoundException("failed to fetch records");
-		}
-	}
-	
-	
-	
-
-	/**
-	 * Retrieves a list of SkillCompetencyBean objects from the database based on a technical category ID.
-	 *
-	 * @param technicalCatId The ID of the technical category.
-	 * @return A list of SkillCompetencyBean objects.
-	 * @throws RecordNotFoundException If no records are found for the provided technical category ID.
-	 */
-	@Override
-	public List<SkillCompetencyBean> findSkillCompetencyByTechId(int technicalCatId) throws RecordNotFoundException {
-		log.info("Service findByTechId Method Start");
-		try {
-			List<SkillCompetencyEntity> entities = competencyRepository.getByTechId(technicalCatId);
-			List<SkillCompetencyBean> list = new ArrayList<>();
-			for (SkillCompetencyEntity entity : entities) {
-				SkillCompetencyBean bean = convertEntityToBean(entity);
-				list.add(bean);
+			if (skillEntity != null) {
+				log.info("Service findByUuid Method End");
+				return convertEntityToBean(skillEntity);
+			} else {
+				throw new RecordNotFoundException("skillCompetency record is not found with this uuid");
 			}
-			log.info("Service findByTechId Method End");
-			return list;
-		} catch (Exception e) {
-			throw new RecordNotFoundException("failed to fetch records");
+		} else {
+			throw new NullPointerException("skillCompetencyBean uuid is null");
 		}
+
 	}
 
-	
-	
-	/**
-	 * Retrieves a paginated list of employee skills based on an array of skill IDs.
-	 *
-	 * @param skillId An array of skill IDs.
-	 * @param page The page number.
-	 * @param size The page size.
-	 * @return A PaginationDto containing the paginated list of employee skills.
-	 * @throws RecordNotFoundException If no records are found for the provided skill IDs.
-	 */
 	@Override
-	public PaginationDto getAllEmployeeSkillsBySkillIds(int[] skillId, int page, int size) throws RecordNotFoundException {
-		try {
+	public SkillCompetencyBean getSkillCompetencyBySkillId(int skillId) throws RecordNotFoundException {
+		log.info("Service getBySkillId Method Start");
+		if (skillId != CommonConstants.FALSE) {
+			SkillCompetencyEntity entity = competencyRepository.findBySkillId(skillId);
+			if (entity != null) {
+				log.info("Service getBySkillId Method End");
+				return convertEntityToBean(entity);
+			} else {
+				throw new RecordNotFoundException("skillCompetency record is not found with this skillId");
+			}
+		} else {
+			throw new NullPointerException("skillCompetency skillId is null");
+		}
 
-			Pageable pageable = PageRequest.of(page, size);
+	}
 
-			List<EmployeesSkillsListDto> employeeSkillList = new ArrayList<EmployeesSkillsListDto>();
+	@Override
+	public List<SkillCompetencyBean> findSkillCompetencyByTechId(int technicalCategoryId)
+			throws RecordNotFoundException {
+		log.info("Service findByTechId Method Start");
+		if (technicalCategoryId != CommonConstants.FALSE) {
+			List<SkillCompetencyEntity> entities = competencyRepository.getByTechId(technicalCategoryId);
+			if (entities != null) {
+				List<SkillCompetencyBean> list = new ArrayList<>();
+				for (SkillCompetencyEntity entity : entities) {
+					SkillCompetencyBean bean = convertEntityToBean(entity);
+					list.add(bean);
+				}
+				log.info("Service findByTechId Method End");
+				return list;
+			} else {
+				throw new RecordNotFoundException("skillCompetency record is not found with this technicalCatId");
+			}
+		} else {
+			throw new NullPointerException("skillCompetency technicalCatId is null");
+		}
 
-			Page<EmployeeEntityDto> findEmployeesBySkillId = employeeRepository.findEmployeesBySkillId(skillId,
-					pageable);
+	}
+
+	@Override
+	public PaginationDto getAllEmployeeSkillsBySkillIds(int[] skillId, int page, int size)
+			throws RecordNotFoundException {
+		log.info("getAllEmployeeSkillsBySkillIds() started");
+		Pageable pageable = PageRequest.of(page, size);
+
+		List<EmployeesSkillsListDto> employeeSkillList = new ArrayList<EmployeesSkillsListDto>();
+
+		Page<EmployeeEntityDto> findEmployeesBySkillId = employeeRepository.findEmployeesBySkillId(skillId, pageable);
+		if (findEmployeesBySkillId != null) {
 			for (EmployeeEntityDto employee : findEmployeesBySkillId.getContent()) {
 				List<SkillsBean> findSkillsByEmployeeId = competencyRepository
 						.findSkillsByEmployeeId(employee.getEmployeeId(), skillId);
@@ -269,9 +213,10 @@ public class SkillCompetencyServiceImpl implements SkillCompetencyService {
 					.first(findEmployeesBySkillId.isFirst()).last(findEmployeesBySkillId.isLast())
 					.totalRecords(findEmployeesBySkillId.getTotalElements())
 					.totalPages(findEmployeesBySkillId.getTotalPages()).skillList(employeeSkillList).build();
+			log.info("getAllEmployeeSkillsBySkillIds() ended");
 			return paginationDto;
-		} catch (Exception e) {
-			throw new RecordNotFoundException("failed to fetch records");
+		} else {
+			throw new RecordNotFoundException("skillCompetency record is not found");
 		}
 
 	}

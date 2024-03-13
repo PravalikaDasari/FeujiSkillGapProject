@@ -15,6 +15,6 @@ public class TechnicalSkillsBean {
 
 	private Integer referenceDetailId;
 	private String referenceDetailValue;
+	private Integer referenceTypeId;
 
-	
 }

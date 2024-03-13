@@ -9,24 +9,18 @@ import com.feuji.referenceservice.entity.CommonReferenceDetailsEntity;
 
 public interface CommonReferenceDetailsRepo extends JpaRepository<CommonReferenceDetailsEntity, Long> {
 
-//	@Query(value ="select reference_details_values,reference_details_id from common_reference_details rd where rd.reference_type_id=(select reference_type_id from common_reference_type where reference_type_name=:typeName)", nativeQuery = true )
-//	public List<String> getDetailsByTypeName(String typeName);
-
-	@Query(value ="select reference_details_values,reference_details_id from common_reference_details rd where rd.reference_type_id=(select reference_type_id from common_reference_type where reference_type_name=:typeName)", nativeQuery = true )
+	@Query(value = "select reference_details_values,reference_details_id from common_reference_details rd where rd.reference_type_id=(select reference_type_id from common_reference_type where reference_type_name=:typeName)", nativeQuery = true)
 	public List<String> getDetailsByTypeName(String typeName);
 
-//	@Query(value="SELECT new com.feuji.referenceservice.bean.TechnicalSkillsBean(rd.referenceDetailId, rd.referenceDetailValue) FROM CommonReferenceDetailsEntity rd WHERE rd.referenceDetailId=(select referenceTypeId from CommonReferenceTypeEntity where referenceTypeName=?)", nativeQuery = true )
-//	public List<TechnicalSkillsBean> getDetailsByTypeName(String typeName);
 
 	@Query(value = "SELECT reference_details_id FROM common_reference_details WHERE reference_details_values = ?", nativeQuery = true)
 	public int getByName(String name);
 
-	@Query(value="select reference_details_values from common_reference_details where reference_details_id=:id ",nativeQuery = true)
+	@Query(value = "select reference_details_values from common_reference_details where reference_details_id=:id ", nativeQuery = true)
 	public String getNameById(int id);
 
-	@Query(value="select reference_details_values from common_reference_details where "
+	@Query(value = "select reference_details_values from common_reference_details where "
 			+ "reference_type_id=(select reference_type_id from common_reference_type "
-			+ "where reference_type_name=:category)",nativeQuery = true)
+			+ "where reference_type_name=:category)", nativeQuery = true)
 	public List<String> getCategories(String category);
-
 }

@@ -6,28 +6,26 @@ import com.feuji.employeeskillservice.bean.EmployeeBean;
 import com.feuji.employeeskillservice.bean.EmployeeSkillBean;
 import com.feuji.employeeskillservice.bean.EmployeeSkillGet;
 import com.feuji.employeeskillservice.bean.EmployeeUiBean;
+import com.feuji.employeeskillservice.exception.InvalidInputException;
 import com.feuji.employeeskillservice.exception.NoRecordFoundException;
 
 public interface EmployeeSkillService {
-	EmployeeSkillBean saveEmployeeSkill(EmployeeSkillBean bean) throws Exception;
+	public EmployeeSkillBean saveEmployeeSkill(EmployeeSkillBean bean) throws Exception;
 
 	public List<EmployeeSkillBean> getEmployeeSkillById(Long employeeId) throws NoRecordFoundException;
 
-	public EmployeeSkillBean updateEmployeeSkill(EmployeeSkillBean employeeSkillBean) throws Exception;
-
 	public List<EmployeeSkillBean> saveAll(List<EmployeeSkillBean> beanList);
 
-	public List<EmployeeSkillBean> findBySkillId(int skillId) throws NoRecordFoundException;
+	public List<EmployeeSkillBean> findBySkillId(int skillId) throws NoRecordFoundException, InvalidInputException;
 
-	EmployeeBean getEmployeeByEmail(String email) throws Exception;
+	public EmployeeBean getEmployeeByEmail(String email) throws Exception;
 
-	public List<EmployeeSkillGet> getAllEmployeeSkills(String email) throws NoRecordFoundException, Exception;
+	public List<EmployeeSkillGet> getAllEmployeeSkills(String email) throws Exception;
 
-	String updateDeleteStatus(Long employeeSkillId) throws Exception;
+	public String updateDeleteStatus(Long employeeSkillId) throws InvalidInputException;
 
-	EmployeeSkillBean updateEmployeeSkill(EmployeeSkillGet set, Long id) throws Exception;
+	public EmployeeSkillBean updateEmployeeSkill(EmployeeSkillGet set, Long id) throws InvalidInputException, NoRecordFoundException;
 
-	List<EmployeeSkillBean> convertUiBeanToSkillBean(List<EmployeeUiBean> employeeUiBeans)
-			throws IllegalArgumentException;
+	public List<EmployeeSkillBean> convertUiBeanToSkillBean(List<EmployeeUiBean> employeeUiBeans) throws NoRecordFoundException;
 
 }

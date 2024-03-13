@@ -2,8 +2,14 @@ package com.feuji.referenceservice.exception;
 
 public class ReferenceNotFoundException extends RuntimeException {
     
-    public ReferenceNotFoundException(String message) {
+    private static final long serialVersionUID = 1L;
+
+    public ReferenceNotFoundException() {
+        super();
+    }
+	public ReferenceNotFoundException(String message) {
         super(message);
     }
+	
 }
 

@@ -12,9 +12,10 @@ public interface SkillCompetencyService {
 
 	public SkillCompetencyBean updateAllSkillCompetencyRecords(SkillCompetencyBean skillCompetencyBean)
 			throws RecordNotFoundException;
+	
 	public SkillCompetencyBean findSkillCompetencyByUuid(String uuid) throws RecordNotFoundException ;
 
-	public SkillCompetencyBean getSkillCompetencyBySkillId(int skillId);
+	public SkillCompetencyBean getSkillCompetencyBySkillId(int skillId) throws RecordNotFoundException ;
 
 	public List<SkillCompetencyBean> findSkillCompetencyByTechId(int technicalCatId) throws RecordNotFoundException ;
 

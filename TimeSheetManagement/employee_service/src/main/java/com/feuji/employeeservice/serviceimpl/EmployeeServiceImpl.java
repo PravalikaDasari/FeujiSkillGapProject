@@ -19,7 +19,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	// SAVE
 	@Override
-
 	   public EmployeeEntity saveEmployee(EmployeeBean employeeBean) {
 		// Convert EmployeeBean to EmployeeEntity
 		EmployeeEntity employeeEntity = beanToEntity(employeeBean);
