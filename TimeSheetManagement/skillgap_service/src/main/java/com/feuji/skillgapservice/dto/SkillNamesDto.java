@@ -15,12 +15,15 @@ import lombok.ToString;
 @Builder
 public class SkillNamesDto {
 
-	public SkillNamesDto(int skillTypeId, String skillName) {
+
+	private String skillName;
+	private Integer skillTypeId;
+	private String skillType;
+	
+	public SkillNamesDto(int skillTypeId, String skillName) 
+	{
 		this.skillTypeId = skillTypeId;
 		this.skillName = skillName;
 	}
 
-	private String skillName;
-	private String skillType;
-	private Integer skillTypeId;
 }

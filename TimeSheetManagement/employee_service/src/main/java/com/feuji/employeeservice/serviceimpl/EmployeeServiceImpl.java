@@ -60,6 +60,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
+	public EmployeeEntity getById(Integer id) throws RecordsNotFoundException {
+		log.info("Service getById Method Start");
+		EmployeeEntity employeeEntity = employeeRepository.findById(id)
+				.orElseThrow(() -> new RecordsNotFoundException("Employee not found with id:"));
+		return employeeEntity;
+	}
+
+	@Override
 	public void updateEmployeeDetails(EmployeeEntity updateEmployee, Integer id) throws Throwable {
 		try {
 			log.info("Service updateEmployeeDetails Method Start");
@@ -91,14 +99,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 			throw new RecordsNotFoundException("failed to update records");
 		}
 
-	}
-
-	@Override
-	public EmployeeEntity getById(Integer id) throws RecordsNotFoundException {
-		log.info("Service getById Method Start");
-		EmployeeEntity employeeEntity = employeeRepository.findById(id)
-				.orElseThrow(() -> new RecordsNotFoundException("Employee not found with id:"));
-		return employeeEntity;
 	}
 
 	public EmployeeBean entityToBean(EmployeeEntity entity) {

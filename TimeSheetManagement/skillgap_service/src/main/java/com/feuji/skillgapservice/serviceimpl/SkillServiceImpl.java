@@ -136,23 +136,18 @@ public class SkillServiceImpl implements SkillService {
 	public List<SkillNamesDto> getSkillNamesBySkillId(int[] skillIds) {
 		log.info("Service getSkillNames Method Start");
 		if (skillIds != null) {
-			List<Object[]> skills = skillRepository.getSkills(skillIds);
-			if(skills!=null)
+			List<SkillNamesDto> skillNamesDtosList = skillRepository.getSkills(skillIds);
+			if(skillNamesDtosList!=null)
 			{
-				List<SkillNamesDto> skillNamesDtos = new ArrayList<>();
-				for (Object[] dto : skills) {
-					SkillNamesDto nameDto = new SkillNamesDto();
-					nameDto.setSkillName(dto[0].toString());
-					nameDto.setSkillTypeId(parseInteger(dto[1]));
-					if (dto[2].toString().equals("Primary")) {
-						nameDto.setSkillType("P");
-					} else {
-						nameDto.setSkillType("S");
-					}
-					skillNamesDtos.add(nameDto);
+				for(SkillNamesDto dto :skillNamesDtosList )
+				{
+					if(dto.getSkillType().equals(CommonConstants.PRIMARY))
+						dto.setSkillType(CommonConstants.SKILLTYPEONE);
+					else
+						dto.setSkillType(CommonConstants.SKILLTYPETWO);
 				}
 				log.info("Service getSkillNames Method End");
-				return skillNamesDtos;
+				return skillNamesDtosList;
 			}else {
 				throw new SkillNotFoundException("no record found with this id's: "+skillIds);
 			}
@@ -160,21 +155,6 @@ public class SkillServiceImpl implements SkillService {
 			throw new NullPointerException("skillBean skillIds are null");
 		}
 
-	}
-
-	private Integer parseInteger(Object value) {
-		log.info("parseInteger Method Start");
-		if (value instanceof String) {
-			try {
-				return Integer.parseInt((String) value);
-			} catch (NumberFormatException e) {
-				throw new NumberFormatException("failed to convert method");
-			}
-		} else if (value instanceof Integer) {
-			return (Integer) value;
-		}
-		log.info("parseInteger Method End");
-		return null;
 	}
 
 	public SkillBean entityToBean(SkillEntity entity) {

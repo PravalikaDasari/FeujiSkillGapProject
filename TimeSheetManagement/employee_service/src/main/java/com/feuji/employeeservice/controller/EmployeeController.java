@@ -29,6 +29,12 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 
+    /**
+     * Handles the HTTP POST request to save employee details.
+     * @param employeeBean The request body containing the details of the employee to be saved.
+     * @return An HTTP response containing the saved EmployeeEntity object and the corresponding HTTP status code.
+     * @throws NullPointerException If the provided employeeBean is null.
+     */
 	@PostMapping("/save")
 	public ResponseEntity<EmployeeEntity> saveEmployee(@RequestBody EmployeeBean employeeBean)
 			throws NullPointerException {
@@ -42,7 +48,13 @@ public class EmployeeController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
+	
+	
+	 /**
+     * Handles the HTTP GET request to retrieve details of all employees.
+     * @return An HTTP response containing the list of retrieved EmployeeEntity objects and the corresponding HTTP status code.
+     * @throws RecordsNotFoundException If no employee records are found or if any internal operation results in a RecordsNotFoundException.
+     */
 	@GetMapping("/getAll")
 	public ResponseEntity<List<EmployeeEntity>> getAllEmployees() throws RecordsNotFoundException {
 		log.info("GetAll Start: Fetching All Employee Details");
@@ -56,7 +68,13 @@ public class EmployeeController {
 			throw new RecordsNotFoundException("Failed to get all employee records");
 		}
 	}
-
+	
+	
+	 /**
+     * Handles the HTTP GET request to retrieve details of an employee by email.
+     * @param employeeEmail The email of the employee to be retrieved.
+     * @return An HTTP response containing the retrieved EmployeeBean object and the corresponding HTTP status code.
+     */
 	@GetMapping("/getByEmail/{employeeEmail}")
 	public ResponseEntity<EmployeeBean> getByEmail(@PathVariable String employeeEmail) {
 		log.info("GetByEmail Start:Fetching employee Details" + employeeEmail);

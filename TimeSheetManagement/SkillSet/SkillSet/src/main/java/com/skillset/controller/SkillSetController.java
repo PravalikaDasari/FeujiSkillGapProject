@@ -9,25 +9,37 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.feuji.skillset.exception.RecordNotFoundException;
 import com.skillset.dto.GapDto;
 import com.skillset.servic.SkillSetService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class SkillSetController {
-	
+
 	@Autowired
 	private SkillSetService skillSetservice;
-	
+
+	/**
+	 * Handles the HTTP GET request to fetch skill details based on email and skill category ID.
+	 * @param email The email of the user whose skill details are to be fetched.
+	 * @param skillCategoryId The ID of the skill category for which details are to be fetched.
+	 * @return An HTTP response containing the list of GapDto objects representing skill details and the corresponding HTTP status code.
+	 */
+
 	@GetMapping("/fetch/{email}/{skillCategoryId}")
-	public ResponseEntity<List<GapDto>> fetchSkillDetails(@PathVariable String email, @PathVariable Integer skillCategoryId) {
-	   
-		List<GapDto> list = skillSetservice.fetchSkillDto(email,skillCategoryId);
-	    if (list.isEmpty()) {
-	        return new ResponseEntity<>(list,HttpStatus.NOT_FOUND); 
-	    }
-	    return new ResponseEntity<>(list, HttpStatus.OK);
+	public ResponseEntity<List<GapDto>> fetchSkillDetails(@PathVariable String email,
+			@PathVariable Integer skillCategoryId) {
+		List<GapDto> list = null;
+		try {
+			list = skillSetservice.fetchSkillDto(email, skillCategoryId);
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (RecordNotFoundException e) {
+			log.info(e.getMessage());
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		}
 	}
-
-
 
 }

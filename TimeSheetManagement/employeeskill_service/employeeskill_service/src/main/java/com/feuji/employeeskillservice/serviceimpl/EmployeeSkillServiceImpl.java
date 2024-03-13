@@ -38,7 +38,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 	private RestTemplate restTemplate;
 
 	/**
-	 * 
 	 * Saves a list of employee skill beans.
 	 * 
 	 * @param beanList The list of employee skill beans to be saved.
@@ -101,19 +100,21 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 		if (set != null && id != null) {
 			EmployeeSkillEntity entity = repository.findByEmployeeSkillId(id);
 			entity.setCompetencyLevelId(GetIdByName(set.getCompetencyLevelId()));
-
+			entity.setComments(set.getComments());
 			entity.setYearsOfExp(set.getYearsOfExp());
+			entity.setDescription(set.getDescription());
+			entity.setSkillTypeId(GetIdByName(set.getSkillTypeId()));
 			if (set.getCertification().equals(CommonConstants.YES))
 				entity.setCertification((byte) CommonConstants.TRUE);
 			else
 				entity.setCertification((byte) CommonConstants.FALSE);
+		
 			entity.setDescription(set.getDescription());
 			entity.setComments(set.getComments());
 
 			long currentTimeMillis = System.currentTimeMillis();
 			Timestamp timestamp = new Timestamp(currentTimeMillis);
 			entity.setModifiedOn(timestamp);
-
 			EmployeeSkillEntity save = repository.save(entity);
 			log.info("update() ended: in EmployeeSkillServiceImpl");
 			return entityToBeanCovertion(save);
@@ -122,6 +123,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 		}
 
 	}
+
 
 	/**
 	 * Saves an employee skill bean.
@@ -474,6 +476,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 		log.info("entityToBeanCovertion() ended");
 		return bean;
 	}
+	
 
 	/**
 	 * Converts an employee skill bean to an EmployeeSkillEntity.
