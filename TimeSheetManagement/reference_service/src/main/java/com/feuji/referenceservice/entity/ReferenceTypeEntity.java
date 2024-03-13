@@ -1,7 +1,6 @@
 package com.feuji.referenceservice.entity;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -33,28 +32,28 @@ public class ReferenceTypeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "reference_type_id")
 	private Integer referenceTypeId;
-	
+
 	@Column(name = "reference_type_name")
 	private String referenceTypeName;
-	
+
 	@OneToMany(mappedBy = "referenceType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReferenceDetailsEntity> referenceDetailsList;
-	
+	private List<ReferenceDetailsEntity> referenceDetailsList;
+
 	@Column(name = "uuid")
 	private String uuid;
-	
+
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
-	
+
 	@Column(name = "created_by")
 	private String createdBy;
-	
+
 	@Column(name = "created_on")
 	private Timestamp createdOn;
-	
+
 	@Column(name = "modified_by")
 	private String modifiedBy;
-	
+
 	@Column(name = "modified_on")
 	private Timestamp modifiedOn;
 }

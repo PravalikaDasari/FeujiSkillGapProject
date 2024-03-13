@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -33,6 +32,5 @@ public class UserLoginBean {
     private String modifiedBy;
     private Timestamp modifiedOn;
     private Boolean flag;
-//    private String resetToken; 
 
 }

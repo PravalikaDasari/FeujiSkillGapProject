@@ -73,7 +73,6 @@ public class SkillCompetencyControllerTest {
     }
     
     
-    //-------------------------update--------------------
     /**
      * Tests the successful update of all SkillCompetencyBean records.
      * Verifies that the controller returns the updated SkillCompetencyBean object and an HTTP status of OK.
