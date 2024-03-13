@@ -6,7 +6,5 @@ import com.skillset.dto.GapDto;
 
 public interface SkillSetService 
 {
-//	 Map<String, EmployeeSkillDetailsDto> fetchSkills();
-
 	List<GapDto> fetchSkillDto(String email,Integer skillCategoryId);
 }

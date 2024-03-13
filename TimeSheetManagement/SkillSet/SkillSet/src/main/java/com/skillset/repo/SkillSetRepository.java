@@ -4,39 +4,33 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.repository.query.Param;
 
+import com.skillset.dto.GapDto;
 import com.skillset.entity.EmployeeEntity;
 
 import jakarta.transaction.Transactional;
 
 @Transactional
+@EnableJpaRepositories
 public interface SkillSetRepository extends JpaRepository<EmployeeEntity, Integer> {
 
-	
-	
-//	---------------------------------------------------------------
-	@Query(value = "SELECT " + 
-			"CONCAT(e.first_name, ' ', e.middle_name, ' ', e.last_name) employee_name, "+
-			"e.employee_id AS employee_id, " +
-			"e.email AS email, " +
-			"e.designation AS designation, " +
-		    "e.email AS employee_email, " +
-		    "s.skill_name AS skill_name, " + 
-		    "s.description AS description, "+
-		    "sc.competency_level_id AS skill_competency_level_id, " +
-		    "es.competency_level_id AS employee_competency_level_id, " +
-		    "sr.reference_details_values AS skillReferenceValue, " +
-		    "er.reference_details_values AS employeeReferenceValue " +
-		"FROM " + "Skills s " +
-		"JOIN " + "skill_competency sc ON s.skill_id = sc.skill_id " +
-		"JOIN " + "employee_skills es ON sc.skill_id = es.skill_id " +
-		"JOIN " + "employee e ON e.employee_id=es.employee_id " +
-		"JOIN common_reference_details sr ON sc.competency_level_id = sr.reference_details_id " +
-		"JOIN common_reference_details er ON es.competency_level_id = er.reference_details_id " +
-		"WHERE " +
-		"e.email = :email  and es.is_deleted=0 and s.skill_category_id= :skillCategoryId", nativeQuery = true)
-List<Object[]> findEmployeeDetailsByEmail(String email,Integer skillCategoryId);
+	@Query("SELECT new com.skillset.dto.GapDto(e.firstName, e.middleName, e.lastName, e.employeeId, " +
+	        "e.email, e.designation, s.skillName, s.description, sc.competencyLevelId as exCompetencyLevelId, " +
+	        "es.competencyLevelId as acCompetencyLevelId, "
+	        + "sr.referenceDetailValue as exReferenceDetailsValues, "
+	        + " er.referenceDetailValue as acReferenceDetailsValues) " +
+	        "FROM SkillEntity s " +
+	        "JOIN SkillCompetencyEntity sc ON s.skillId = sc.skillId " +
+	        "JOIN EmployeeSkillEntity es ON sc.skillId = es.skillId " +
+	        "JOIN EmployeeEntity e ON e.employeeId = es.employeeId " +
+	        "JOIN CommonReferenceDetailsEntity sr ON sc.competencyLevelId = sr.referenceDetailId " +
+	        "JOIN CommonReferenceDetailsEntity er ON es.competencyLevelId = er.referenceDetailId " +
+	        "WHERE e.email = :email AND es.isDeleted = 0 AND s.skillCategoryId = :skillCategoryId")
+	List<GapDto> findEmployeeDetailsByEmail(@Param("email") String email, @Param("skillCategoryId") int skillCategoryId);
 
-//	---------------------------------------------------------------
+	
+	
 
 }

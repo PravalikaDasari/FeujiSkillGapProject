@@ -13,8 +13,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Builder
-public class SkillNamesDto 
-{
+public class SkillNamesDto {
+
+	public SkillNamesDto(int skillTypeId, String skillName) {
+		this.skillTypeId = skillTypeId;
+		this.skillName = skillName;
+	}
+
 	private String skillName;
 	private String skillType;
 	private Integer skillTypeId;
