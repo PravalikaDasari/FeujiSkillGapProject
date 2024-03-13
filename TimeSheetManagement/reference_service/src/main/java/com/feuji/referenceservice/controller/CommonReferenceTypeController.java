@@ -59,6 +59,7 @@ public class CommonReferenceTypeController {
 	 * This method is used to fetch a common reference type entity associated with
 	 * the provided type name.
 	 * 
+
 	 * @param typeName The type name for which to retrieve a common reference type
 	 *                 entity.
 	 * @return ResponseEntity<CommonReferenceTypeEntity> A ResponseEntity containing
@@ -66,9 +67,6 @@ public class CommonReferenceTypeController {
 	 *         found for the provided type name. Returns HttpStatus.OK if a common
 	 *         reference type entity is found, HttpStatus.NOT_FOUND if the provided
 	 *         type name is not found.
-	 * @throws ReferenceNotFoundException If the common reference type entity
-	 *                                    retrieved by the provided type name is not
-	 *                                    found.
 	 */
 	@GetMapping("/getref/{name}")
 	public ResponseEntity<CommonReferenceTypeEntity> getReferenceTypeByName(@PathVariable String typeName) {
