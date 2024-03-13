@@ -1,4 +1,4 @@
-package com.feuji.employeeskillservice.constants;
+package com.feuji.referenceservice.constants;
 
 public interface CommonConstants 
 {
