@@ -64,7 +64,7 @@ public class CommonReferenceTypeController {
 	 *         or null if no entity is found for the provided type name.
 	 *         Returns HttpStatus.OK if a common reference type entity is found, 
 	 *         HttpStatus.NOT_FOUND if the provided type name is not found.
-	 * @throws ReferenceNotFoundException If the common reference type entity retrieved by the provided type name is not found.
+	 * @return ReferenceNotFoundException If the common reference type entity retrieved by the provided type name is not found.
 	 */
 	@GetMapping("/getref/{name}")
 	public ResponseEntity<CommonReferenceTypeEntity> getReferenceTypeByName(@PathVariable String typeName) {
