@@ -31,4 +31,8 @@ public class CommonReferenceTypeBean {
 	private String modifiedBy;
 
 	private Timestamp modifiedOn;
+	
+	public void setName(String referenceTypeName) {
+		this.referenceTypeName=referenceTypeName;
+	}
 }

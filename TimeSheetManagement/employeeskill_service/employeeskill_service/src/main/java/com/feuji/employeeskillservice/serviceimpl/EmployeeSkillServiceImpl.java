@@ -55,7 +55,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			log.info("saveAll() ended:in EmployeeSkillServiceImpl ");
 			return list;
 		} else {
-			throw new NullPointerException("beanlist is null");
+			throw new NullPointerException("beanlist is null:in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -76,7 +76,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			log.info("updateDeleteStatus() ended: in EmployeeSkillServiceImpl");
 			return "updated Successfully";
 		} else {
-			throw new InvalidInputException("invalid input is given");
+			throw new InvalidInputException("invalid input is given:in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -105,10 +105,13 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			entity.setDescription(set.getDescription());
 			entity.setSkillTypeId(GetIdByName(set.getSkillTypeId()));
 			if (set.getCertification().equals(CommonConstants.YES))
+			{
 				entity.setCertification((byte) CommonConstants.TRUE);
+			}
 			else
+			{
 				entity.setCertification((byte) CommonConstants.FALSE);
-		
+			}
 			entity.setDescription(set.getDescription());
 			entity.setComments(set.getComments());
 
@@ -119,7 +122,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			log.info("update() ended: in EmployeeSkillServiceImpl");
 			return entityToBeanCovertion(save);
 		} else {
-			throw new InvalidInputException("invalid input entered");
+			throw new InvalidInputException("invalid input entered:in EmployeeSkillServiceImpl");
 		}
 
 	}
@@ -144,7 +147,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			log.info("saveEmployeeSkill() ended:Saves an employee skill bean");
 			return skillBean;
 		} catch (Exception e) {
-			throw new Exception("failed to Save an employee skill bean");
+			throw new Exception("failed to Save an employee skill bean:in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -184,15 +187,19 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 				empSkillBean.setYearsOfExp(Integer.parseInt(bean.getYearsOfExp()));
 				empSkillBean.setIsDeleted(Byte.parseByte(bean.getIsDeleted()));
 				if (bean.getCertification().equals(CommonConstants.YES))
+				{
 					empSkillBean.setCertification((byte) CommonConstants.TRUE);
+				}
 				else
+				{
 					empSkillBean.setCertification((byte) CommonConstants.FALSE);
+				}
 				listBeans.add(empSkillBean);
 			}
 			log.info("convertUiBeanToSkillBean() end:Converts a list of employee UI beans to employee skill beans");
 			return listBeans;
 		} else {
-			throw new NullPointerException("employeeUiBeans are null");
+			throw new NullPointerException("employeeUiBeans are null:in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -226,7 +233,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 				throw new NoRecordFoundException("no record found with this email: " + email);
 			}
 		} else {
-			throw new NullPointerException("email is null");
+			throw new NullPointerException("email is null:in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -254,7 +261,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 				throw new NoRecordFoundException("no record found with this id: " + employeeId);
 			}
 		} else {
-			throw new NullPointerException("employee id is null");
+			throw new NullPointerException("employee id is null:in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -282,7 +289,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 				throw new NoRecordFoundException("no record found with this skillId: " + skillId);
 			}
 		} else {
-			throw new InvalidInputException("skillId is not found");
+			throw new InvalidInputException("skillId is not found:in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -315,7 +322,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			log.info(" getAllEmployeeSkills() ended: in EmployeeSkillServiceImpl");
 			return list;
 		} else {
-			throw new NullPointerException("email is null");
+			throw new NullPointerException("email is null:in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -348,7 +355,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 				throw new NoRecordFoundException("no records found with this id: " + skillId);
 			}
 		} else {
-			throw new InvalidInputException("invalid input is entered");
+			throw new InvalidInputException("invalid input is entered:in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -377,7 +384,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			log.info("getTypeName() ended:in EmployeeSkillServiceImpl");
 			return responseEntity.getBody();
 		} else {
-			throw new InvalidInputException("invalid input");
+			throw new InvalidInputException("invalid input:in EmployeeSkillServiceImpl");
 		}
 
 	}
@@ -411,7 +418,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 				throw new NoRecordFoundException("no record found with this name: " + name);
 			}
 		} else {
-			throw new InvalidInputException("invalid input");
+			throw new InvalidInputException("invalid input::in EmployeeSkillServiceImpl");
 		}
 	}
 
@@ -455,7 +462,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 	 * Converts an EmployeeSkillEntity to an EmployeeSkillBean.
 	 */
 	public EmployeeSkillBean entityToBeanCovertion(EmployeeSkillEntity entity) {
-		log.info("entityToBeanCovertion() started");
+		log.info("entityToBeanCovertion() started:in EmployeeSkillServiceImpl");
 		EmployeeSkillBean bean = new EmployeeSkillBean();
 		bean.setEmployeeSkillId(entity.getEmployeeSkillId());
 		bean.setEmployeeId(entity.getEmployeeId());
@@ -473,7 +480,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 		bean.setCreatedOn(entity.getCreatedOn());
 		bean.setModifiedBy(entity.getModifiedBy());
 		bean.setModifiedOn(entity.getModifiedOn());
-		log.info("entityToBeanCovertion() ended");
+		log.info("entityToBeanCovertion() ended :in EmployeeSkillServiceImpl");
 		return bean;
 	}
 	
@@ -482,7 +489,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 	 * Converts an employee skill bean to an EmployeeSkillEntity.
 	 */
 	public EmployeeSkillEntity beanToEntityConvertion(EmployeeSkillBean bean) {
-		log.info("beanToEntityConvertion() started");
+		log.info("beanToEntityConvertion() started:in EmployeeSkillServiceImpl");
 		EmployeeSkillEntity entity = new EmployeeSkillEntity();
 		entity.setEmployeeId(bean.getEmployeeId());
 		entity.setEmployeeCode(bean.getEmployeeCode());
@@ -496,7 +503,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 		entity.setComments(bean.getComments());
 		entity.setCreatedBy(bean.getCreatedBy());
 		entity.setModifiedBy(bean.getModifiedBy());
-		log.info("beanToEntityConvertion() ended");
+		log.info("beanToEntityConvertion() ended:in EmployeeSkillServiceImpl");
 		return entity;
 	}
 }

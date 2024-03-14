@@ -43,16 +43,16 @@ public class SkillController {
 	 * @return SkillNotFoundException if skill record is not found .
 	 */
 	@PostMapping("/insert")
-	public ResponseEntity<SkillBean> saveSkill(@RequestBody SkillBean bean) {
-		log.info("Save Start:Save saveSkillData Details");
-		SkillBean skill = null;
+	public ResponseEntity<SkillBean> saveSkill(@RequestBody SkillBean skillBean) {
+		log.info("Save Start:in SkillController");
+		SkillBean resultSkillBean = null;
 		try {
-			skill = skillService.saveSkill(bean);
-			log.info("Save End:Saved saveSkillData Details");
-			return new ResponseEntity<SkillBean>(skill, HttpStatus.CREATED);
+			resultSkillBean = skillService.saveSkill(skillBean);
+			log.info("Save End:in SkillController");
+			return new ResponseEntity<SkillBean>(resultSkillBean, HttpStatus.CREATED);
 		} catch (NullPointerException | SkillNotFoundException exception) {
-			log.info("error occured in saving skills");
-			return new ResponseEntity<SkillBean>(skill, HttpStatus.NOT_FOUND);
+			log.error(exception.getMessage());
+			return new ResponseEntity<SkillBean>(resultSkillBean, HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -69,42 +69,20 @@ public class SkillController {
 	 */
 	@PutMapping("/updateSkill")
 	public ResponseEntity<SkillBean> updateSkillDetails(@RequestParam String uuid, @RequestBody SkillBean skillBean) {
-		log.info("Update Start:Update Skills Details");
+		log.info("Update Start :in SkillController");
 		SkillBean updatedSkill = null;
 		try {
 			skillBean.setUuid(uuid);
 			updatedSkill = skillService.updateSkillDetails(skillBean);
-			log.info("Update End:Updated Skills Details");
+			log.info("Update End:in SkillController");
 			return ResponseEntity.ok(updatedSkill);
 		} catch (NullPointerException | SkillNotFoundException exception) {
-			log.info("error occured in updating skill");
+			log.error(exception.getMessage());
 			return new ResponseEntity<SkillBean>(updatedSkill, HttpStatus.NOT_MODIFIED);
 		}
 	}
 
-	/**
-	 * Retrieves a SkillBean record from the database based on its UUID.
-	 *
-	 * @param uuid The UUID of the SkillBean record to retrieve.
-	 * @return A ResponseEntity containing the retrieved SkillBean object and HTTP
-	 *         status FOUND.
-	 * @return SkillNotFoundException If the SkillBean record with the provided UUID
-	 *         is not found.
-	 * @return NullPointerException if skill uuid id null.
-	 */
-	@GetMapping(path = "/getByUuid")
-	public ResponseEntity<SkillBean> getAdmin(@RequestParam String uuid) {
-		log.info("getByUuid Start:Fetching Uuid");
-		SkillBean bean = null;
-		try {
-			bean = skillService.getSkillByUuid(uuid);
-			log.info("getByUuid End:Fetched Uuid");
-			return new ResponseEntity<>(bean, HttpStatus.FOUND);
-		} catch (SkillNotFoundException | NullPointerException exception) {
-			log.info("error occured in fetching skill details");
-			return new ResponseEntity<>(bean, HttpStatus.FOUND);
-		}
-	}
+	
 
 	/**
 	 * Retrieves a list of SkillBean records from the database based on a technical
@@ -120,15 +98,15 @@ public class SkillController {
 	 */
 	@GetMapping(path = "/getAll/{categoryId}")
 	public ResponseEntity<List<SkillBean>> getSkillsByTechCategoryId(@PathVariable int categoryId) {
-		log.info("GetAll Start:Fetching All Skills");
-		List<SkillBean> list = null;
+		log.info("GetAll Start:in SkillController");
+		List<SkillBean> skillBeanList = null;
 		try {
-			list = skillService.getSkillsByTechCategoryId(categoryId);
-			log.info("GetAll End:Fetched All Skills");
-			return new ResponseEntity<>(list, HttpStatus.OK);
+			skillBeanList = skillService.getSkillsByTechCategoryId(categoryId);
+			log.info("GetAll End:in SkillController");
+			return new ResponseEntity<>(skillBeanList, HttpStatus.OK);
 		} catch (SkillNotFoundException | NullPointerException exception) {
-			log.info("error occured in fetching skills");
-			return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
+			log.error(exception.getMessage());
+			return new ResponseEntity<>(skillBeanList, HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -144,14 +122,14 @@ public class SkillController {
 	 */
 	@GetMapping(path = "/getBySkillId/{skillId}")
 	public ResponseEntity<SkillBean> getSkillBySkillId(@PathVariable int skillId) {
-		log.info("GetBySkillId Start:Fetching Id Details");
+		log.info("GetBySkillId Start:in SkillController");
 		SkillBean bean = null;
 		try {
 			bean = skillService.getSkillBySkillId(skillId);
-			log.info("GetBySkillId End:Fetched Id Details");
+			log.info("GetBySkillId End:in SkillController");
 			return new ResponseEntity<>(bean, HttpStatus.FOUND);
 		} catch (SkillNotFoundException | NullPointerException exception) {
-			log.info("error occured in fetching skill details");
+			log.error(exception.getMessage());
 			return new ResponseEntity<>(bean, HttpStatus.NOT_FOUND);
 		}
 	}
@@ -169,16 +147,39 @@ public class SkillController {
 	 */
 	@GetMapping(path = "/getSkillNames/{skillIds}")
 	public ResponseEntity<List<SkillNamesDto>> getSkillNamesBySkillId(@PathVariable int[] skillIds) {
-		log.info("GetSkillNames Start:Fetching SkillNames");
+		log.info("GetSkillNames Start:in SkillController");
 		List<SkillNamesDto> skills = new ArrayList<>();
 		try {
 			skills = skillService.getSkillNamesBySkillId(skillIds);
-			log.info("GetSkillNames End:Fetched SkillNames");
+			log.info("GetSkillNames End:in SkillController");
 			return new ResponseEntity<List<SkillNamesDto>>(skills, HttpStatus.OK);
 		} catch (SkillNotFoundException | NullPointerException  |RecordNotFoundException exception) {
-			log.info("error occured in fetching skill details");
+			log.error(exception.getMessage());
 			return new ResponseEntity<List<SkillNamesDto>>(skills, HttpStatus.NOT_FOUND);
 		}
 	}
 
+	/**
+	 * Retrieves a SkillBean record from the database based on its skillUuid.
+	 *
+	 * @param skillUuid The UUID of the SkillBean record to retrieve.
+	 * @return A ResponseEntity containing the retrieved SkillBean object and HTTP
+	 *         status FOUND.
+	 * @return SkillNotFoundException If the SkillBean record with the provided skillUuid
+	 *         is not found.
+	 * @return NullPointerException if skill uuid id null.
+	 */
+	@GetMapping(path = "/getByUuid/{skillUuid}")
+	public ResponseEntity<SkillBean> getSkillBean(@RequestParam String skillUuid) {
+		log.info("getByUuid Start:in SkillController");
+		SkillBean skillBean = null;
+		try {
+			skillBean = skillService.getSkillByUuid(skillUuid);
+			log.info("getByUuid End:in SkillController");
+			return new ResponseEntity<>(skillBean, HttpStatus.FOUND);
+		} catch (SkillNotFoundException | NullPointerException exception) {
+			log.error(exception.getMessage());
+			return new ResponseEntity<>(skillBean, HttpStatus.NOT_FOUND);
+		}
+	}
 }

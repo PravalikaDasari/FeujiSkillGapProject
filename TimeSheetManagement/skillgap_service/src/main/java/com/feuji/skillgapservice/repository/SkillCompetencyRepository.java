@@ -60,6 +60,7 @@ public interface SkillCompetencyRepository extends JpaRepository<SkillCompetency
 		INNER JOIN CommonReferenceDetailsEntity cra ON es.competencyLevelId = cra.referenceDetailId 
 		INNER JOIN CommonReferenceDetailsEntity crs ON sc.skillTypeId = crs.referenceDetailId 
 		where e.employeeId = :employeeId and s.skillId in :skillId
+		and es.isDeleted=0 
 		""")
 	 	List<SkillsBean> findSkillsByEmployeeId(Integer employeeId,int[] skillId);
 }

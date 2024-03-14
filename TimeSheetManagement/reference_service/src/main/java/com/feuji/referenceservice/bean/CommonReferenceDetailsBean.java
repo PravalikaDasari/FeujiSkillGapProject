@@ -33,5 +33,5 @@ public class CommonReferenceDetailsBean {
 	private String modifiedBy;
 
 	private Timestamp modifiedOn;
-
+	
 }

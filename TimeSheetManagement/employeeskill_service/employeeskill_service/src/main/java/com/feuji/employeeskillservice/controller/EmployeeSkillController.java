@@ -47,16 +47,17 @@ public class EmployeeSkillController {
 		List<EmployeeSkillBean> employeeSkillBeansList = null;
 		List<EmployeeSkillBean> savedEmployeeSkillBeansList = new ArrayList<>();
 		try {
-			log.info("insertEmployeeSkillBean() Start:Saving Employee Details");
+			log.info("insertEmployeeSkillBean() Start: in EmployeeSkillController");
 			try {
 				employeeSkillBeansList = employeeSkillservice.convertUiBeanToSkillBean(employeeUiBeans);
 			} catch (NullPointerException | NoRecordFoundException e) {
-				log.info(e.getMessage());
+				log.error(e.getMessage());
 			}
 			savedEmployeeSkillBeansList = employeeSkillservice.saveAll(employeeSkillBeansList);
+			log.info("insertEmployeeSkillBean() End: in EmployeeSkillController");
 			return new ResponseEntity<>(savedEmployeeSkillBeansList, HttpStatus.OK);
 		} catch (NullPointerException e) {
-			log.info(e.getMessage());
+			log.error(e.getMessage());
 			return new ResponseEntity<>(savedEmployeeSkillBeansList, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -72,14 +73,14 @@ public class EmployeeSkillController {
 	 */
 	@GetMapping("/getEmployeeSkillById/{employeeId}")
 	public ResponseEntity<List<EmployeeSkillBean>> getEmployeeSkillById(@PathVariable Long employeeId) {
-		log.info("getEmployeeSkill() Start:Fetching EmployeeSkills");
+		log.info("getEmployeeSkillById Start: in EmployeeSkillController");
 		List<EmployeeSkillBean> list = null;
 		try {
 			list = employeeSkillservice.getEmployeeSkillById(employeeId);
-			log.info("getEmployeeSkillById End:Fetched EmployeeSkills");
+			log.info("getEmployeeSkillById End: in EmployeeSkillController");
 			return new ResponseEntity<List<EmployeeSkillBean>>(list, HttpStatus.OK);
-		} catch (NoRecordFoundException|NullPointerException e) {
-			log.info(e.getMessage());
+		} catch (NoRecordFoundException | NullPointerException e) {
+			log.error(e.getMessage());
 			return new ResponseEntity<List<EmployeeSkillBean>>(list, HttpStatus.NOT_FOUND);
 		}
 	}
@@ -96,14 +97,14 @@ public class EmployeeSkillController {
 	 */
 	@GetMapping("/getBySkillId/{skillId}")
 	public ResponseEntity<List<EmployeeSkillBean>> getBySkillId(@PathVariable int skillId) {
-		log.info("getBySkillId Start:Fetching Id Details");
+		log.info("getBySkillId Start: in EmployeeSkillController");
 		List<EmployeeSkillBean> employeeSkillBeanList = null;
 		try {
 			employeeSkillBeanList = employeeSkillservice.findBySkillId(skillId);
-			log.info("getBySkillId End:Fetched Id Details");
+			log.info("getBySkillId End: in EmployeeSkillController");
 			return new ResponseEntity<List<EmployeeSkillBean>>(employeeSkillBeanList, HttpStatus.FOUND);
-		} catch (IllegalArgumentException | NoRecordFoundException | InvalidInputException  e) {
-			log.info(e.getMessage());
+		} catch (IllegalArgumentException | NoRecordFoundException | InvalidInputException e) {
+			log.error(e.getMessage());
 			return new ResponseEntity<List<EmployeeSkillBean>>(employeeSkillBeanList, HttpStatus.NOT_FOUND);
 		}
 	}
@@ -119,15 +120,15 @@ public class EmployeeSkillController {
 	 */
 	@GetMapping("/getAll/{email}")
 	public ResponseEntity<List<EmployeeSkillGet>> getAllEmployeeSkills(@PathVariable String email) {
-		log.info("getAll Start:Fetching All EmployeeSkills");
+		log.info("getAll Start: in EmployeeSkillController");
 		List<EmployeeSkillGet> allEmployeeSkills = null;
 		try {
 			allEmployeeSkills = employeeSkillservice.getAllEmployeeSkills(email);
-			log.info("getAll End:Fetched All EmployeeSkills");
+			log.info("getAll End: in EmployeeSkillController");
 			return new ResponseEntity<List<EmployeeSkillGet>>(allEmployeeSkills, HttpStatus.OK);
 
 		} catch (Exception e) {
-			log.info(e.getMessage());
+			log.error(e.getMessage());
 			return new ResponseEntity<List<EmployeeSkillGet>>(allEmployeeSkills, HttpStatus.NOT_FOUND);
 		}
 	}
@@ -145,14 +146,14 @@ public class EmployeeSkillController {
 	 */
 	@PutMapping("/delete/{employeeSkillId}")
 	public ResponseEntity<String> deleteEmployeeSkill(@PathVariable Long employeeSkillId) {
-		log.info("delete Start:Deleting EmployeeSkills");
+		log.info("delete Start: in EmployeeSkillController");
 		String result = null;
 		try {
 			result = employeeSkillservice.updateDeleteStatus(employeeSkillId);
-			log.info("delete End:Deleted EmployeeSkills");
+			log.info("delete End: in EmployeeSkillController");
 			return new ResponseEntity<String>(result, HttpStatus.OK);
 		} catch (InvalidInputException e) {
-			log.info(e.getMessage());
+			log.error(e.getMessage());
 			return new ResponseEntity<String>(result, HttpStatus.BAD_REQUEST);
 
 		}
@@ -172,13 +173,14 @@ public class EmployeeSkillController {
 	@PutMapping("/update/{employeeSkillId}")
 	public ResponseEntity<EmployeeSkillBean> updateEmployeeSkill(@RequestBody EmployeeSkillGet set,
 			@PathVariable Long employeeSkillId) throws Exception {
-		log.info("update Start:Updating EmployeeSkills");
-		EmployeeSkillBean bean =null;
+		log.info("update Start: in EmployeeSkillController");
+		EmployeeSkillBean bean = null;
 		try {
-			 bean = employeeSkillservice.updateEmployeeSkill(set, employeeSkillId);
+			bean = employeeSkillservice.updateEmployeeSkill(set, employeeSkillId);
+			log.info("update End: in EmployeeSkillController");
 			return new ResponseEntity<EmployeeSkillBean>(bean, HttpStatus.OK);
-		} catch (InvalidInputException|NoRecordFoundException e) {
-			log.info(e.getMessage());
+		} catch (InvalidInputException | NoRecordFoundException e) {
+			log.error(e.getMessage());
 			return new ResponseEntity<EmployeeSkillBean>(bean, HttpStatus.BAD_GATEWAY);
 		}
 	}

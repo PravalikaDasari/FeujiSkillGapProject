@@ -27,9 +27,11 @@ public class SkillSetServiceImpl implements SkillSetService {
 	 */
 
 	public List<GapDto> fetchSkillDto(String email, Integer skillCategoryId) throws RecordNotFoundException {
+		log.info("fetchSkillDto start");
 		List<GapDto> queryResult = repository.findEmployeeDetailsByEmail(email, skillCategoryId);
 		if(queryResult!= null)
 		{
+			log.info("fetchSkillDto end");
 			return queryResult;
 		}else {
 			throw new RecordNotFoundException("no records found");
