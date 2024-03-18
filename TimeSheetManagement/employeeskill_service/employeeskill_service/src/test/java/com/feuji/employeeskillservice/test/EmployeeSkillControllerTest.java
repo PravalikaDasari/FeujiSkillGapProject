@@ -124,20 +124,16 @@ public class EmployeeSkillControllerTest {
 	 */
 	@Test
 	public void testDeleteEmployeeSkill_Success() throws Exception {
-		// Arrange
 		Long employeeSkillId = 1L;
 		String result = "Successfully deleted";
 
 		when(employeeSkillService.updateDeleteStatus(employeeSkillId)).thenReturn(result);
 
-		// Act
 		ResponseEntity<String> responseEntity = employeeSkillController.deleteEmployeeSkill(employeeSkillId);
 
-		// Assert
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(result, responseEntity.getBody());
 
-		// Verify interactions with the mock
 		verify(employeeSkillService, times(1)).updateDeleteStatus(employeeSkillId);
 	}
 
@@ -159,21 +155,16 @@ public class EmployeeSkillControllerTest {
 	 */
 	@Test
 	public void testDeleteEmployeeSkill_InvalidInputException_ReturnsBadRequest() throws Exception {
-		// Arrange
 		Long employeeSkillId = 1L;
 		String errorMessage = "Invalid input";
 
 		when(employeeSkillService.updateDeleteStatus(employeeSkillId))
 				.thenThrow(new InvalidInputException(errorMessage));
 
-		// Act
 		ResponseEntity<String> responseEntity = employeeSkillController.deleteEmployeeSkill(employeeSkillId);
 
-		// Assert
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-		assertNull(responseEntity.getBody()); // Assuming you don't expose error messages in the response body
-
-		// Verify interactions with the mock
+		assertNull(responseEntity.getBody()); 
 		verify(employeeSkillService, times(1)).updateDeleteStatus(employeeSkillId);
 	}
 
@@ -194,18 +185,15 @@ public class EmployeeSkillControllerTest {
 	 */
 	@Test
 	public void testDeleteEmployeeSkill_Exception_ReturnsBadRequest() throws Exception {
-		// Arrange
 		Long employeeSkillId = 1L;
 
 		when(employeeSkillService.updateDeleteStatus(employeeSkillId))
 				.thenThrow(new RuntimeException("Test exception"));
 
-		// Act and Assert
 		assertThrows(RuntimeException.class, () -> {
 			employeeSkillController.deleteEmployeeSkill(employeeSkillId);
 		});
 
-		// Verify interactions with the mock
 		verify(employeeSkillService, times(1)).updateDeleteStatus(employeeSkillId);
 	}
 
@@ -225,20 +213,15 @@ public class EmployeeSkillControllerTest {
 	 */
 	@Test
 	public void testGetAllEmployeeSkills_Success() throws Exception {
-		// Arrange
 		String email = "test@example.com";
 		List<EmployeeSkillGet> allEmployeeSkills = new ArrayList<>();
 		when(employeeSkillService.getAllEmployeeSkills(email)).thenReturn(allEmployeeSkills);
 
-		// Act
 		ResponseEntity<List<EmployeeSkillGet>> responseEntity = employeeSkillController.getAllEmployeeSkills(email);
 
-		// Assert
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(allEmployeeSkills, responseEntity.getBody());
 
-		// Verify interactions with the mock
-		// (optional, depending on your verification needs)
 	}
 
 	/**
@@ -257,19 +240,12 @@ public class EmployeeSkillControllerTest {
 	 */
 	@Test
 	public void testGetAllEmployeeSkills_Failure_ReturnsNotFound() throws Exception {
-		// Arrange
 		String email = "test@example.com";
 		when(employeeSkillService.getAllEmployeeSkills(email)).thenThrow(new Exception("Test exception"));
 
-		// Act
 		ResponseEntity<List<EmployeeSkillGet>> responseEntity = employeeSkillController.getAllEmployeeSkills(email);
 
-		// Assert
 		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-		// You might want to assert other things depending on your use case
-
-		// Verify interactions with the mock
-		// (optional, depending on your verification needs)
 	}
 
 	/**
@@ -280,19 +256,15 @@ public class EmployeeSkillControllerTest {
 	 */
 	@Test
 	public void testGetBySkillId_Success() throws Exception {
-		// Arrange
 		int skillId = 1;
 		List<EmployeeSkillBean> employeeSkillBeanList = new ArrayList<>();
 		when(employeeSkillService.findBySkillId(skillId)).thenReturn(employeeSkillBeanList);
 
-		// Act
 		ResponseEntity<List<EmployeeSkillBean>> responseEntity = employeeSkillController.getBySkillId(skillId);
 
-		// Assert
 		assertEquals(HttpStatus.FOUND, responseEntity.getStatusCode());
 		assertEquals(employeeSkillBeanList, responseEntity.getBody());
 
-		// Verify interactions with the mock
 		verify(employeeSkillService, times(1)).findBySkillId(skillId);
 	}
 
@@ -305,18 +277,13 @@ public class EmployeeSkillControllerTest {
 	 */
 	@Test
 	public void testGetBySkillId_Failure_ReturnsNotFound() throws Exception {
-		// Arrange
 		int skillId = 1;
 		when(employeeSkillService.findBySkillId(skillId)).thenThrow(new NoRecordFoundException("Test exception"));
 
-		// Act
 		ResponseEntity<List<EmployeeSkillBean>> responseEntity = employeeSkillController.getBySkillId(skillId);
 
-		// Assert
 		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-		// You might want to assert other things depending on your use case
 
-		// Verify interactions with the mock
 		verify(employeeSkillService, times(1)).findBySkillId(skillId);
 	}
 
@@ -329,18 +296,13 @@ public class EmployeeSkillControllerTest {
 	 */
 	@Test
 	public void testGetBySkillId_Failure_InvalidInput_ReturnsNotFound() throws Exception {
-		// Arrange
 		int skillId = 1;
 		when(employeeSkillService.findBySkillId(skillId)).thenThrow(new InvalidInputException("Test exception"));
 
-		// Act
 		ResponseEntity<List<EmployeeSkillBean>> responseEntity = employeeSkillController.getBySkillId(skillId);
 
-		// Assert
 		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-		// You might want to assert other things depending on your use case
 
-		// Verify interactions with the mock
 		verify(employeeSkillService, times(1)).findBySkillId(skillId);
 	}
 
@@ -352,43 +314,17 @@ public class EmployeeSkillControllerTest {
 	 */
 	@Test
 	public void testGetEmployeeSkillById_Success() throws NoRecordFoundException {
-		// Arrange
 		Long employeeId = 1L;
 		List<EmployeeSkillBean> employeeSkillBeanList = new ArrayList<>();
 		when(employeeSkillService.getEmployeeSkillById(employeeId)).thenReturn(employeeSkillBeanList);
 
-		// Act
 		ResponseEntity<List<EmployeeSkillBean>> responseEntity = employeeSkillController
 				.getEmployeeSkillById(employeeId);
 
-		// Assert
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(employeeSkillBeanList, responseEntity.getBody());
 
-		// Verify interactions with the mock
 		verify(employeeSkillService).getEmployeeSkillById(employeeId);
 	}
-	/**
-	 * Test case for handling the scenario when no employee skill records are found
-	 * by the provided employee ID through the EmployeeSkillController, and it
-	 * returns HTTP status NOT_FOUND.
-	 *
-	 * @throws NoRecordFoundException If no records are found during the operation.
-	 */
-//	    @Test
-//	    public void testGetEmployeeSkillById_NotFound() throws NoRecordFoundException {
-//	        // Arrange
-//	        Long employeeId = 1L;
-//	        when(employeeSkillService.getEmployeeSkillById(employeeId)).thenThrow(new NoRecordFoundException("Test exception"));
-//
-//	        // Act
-//	        ResponseEntity<List<EmployeeSkillBean>> responseEntity = employeeSkillController.getEmployeeSkillById(employeeId);
-//
-//	        // Assert
-//	        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-//
-//	        // Verify interactions with the mock
-//	        verify(employeeSkillService).getEmployeeSkillById(employeeId);
-//	    }
 
 }

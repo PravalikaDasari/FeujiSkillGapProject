@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.feuji.skillset.exception.RecordNotFoundException;
 import com.skillset.dto.GapDto;
+import com.skillset.dto.SkillGapDto;
 import com.skillset.repo.SkillSetRepository;
 import com.skillset.servic.SkillSetService;
 
@@ -27,9 +28,25 @@ public class SkillSetServiceImpl implements SkillSetService {
 	 */
 
 	public List<GapDto> fetchSkillDto(String email, Integer skillCategoryId) throws RecordNotFoundException {
+		log.info("fetchSkillDto start");
 		List<GapDto> queryResult = repository.findEmployeeDetailsByEmail(email, skillCategoryId);
 		if(queryResult!= null)
 		{
+			log.info("fetchSkillDto end");
+			return queryResult;
+		}else {
+			throw new RecordNotFoundException("no records found");
+		}
+	}
+
+	@Override
+	public List<SkillGapDto> findEmployeeSkills(String email) throws RecordNotFoundException 
+	{
+		log.info("findEmployeeSkills start");
+		List<SkillGapDto> queryResult = repository.findEmployeeSkills(email);
+		if(queryResult!= null)
+		{
+			log.info("findEmployeeSkills end");
 			return queryResult;
 		}else {
 			throw new RecordNotFoundException("no records found");

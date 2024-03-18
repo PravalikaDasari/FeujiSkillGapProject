@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.feuji.skillset.exception.RecordNotFoundException;
 import com.skillset.dto.GapDto;
+import com.skillset.dto.SkillGapDto;
 import com.skillset.servic.SkillSetService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,15 @@ public class SkillSetController {
 	private SkillSetService skillSetservice;
 
 	/**
-	 * Handles the HTTP GET request to fetch skill details based on email and skill category ID.
-	 * @param email The email of the user whose skill details are to be fetched.
-	 * @param skillCategoryId The ID of the skill category for which details are to be fetched.
-	 * @return An HTTP response containing the list of GapDto objects representing skill details and the corresponding HTTP status code.
+	 * Handles the HTTP GET request to fetch skill details based on email and skill
+	 * category ID.
+	 * 
+	 * @param email           The email of the user whose skill details are to be
+	 *                        fetched.
+	 * @param skillCategoryId The ID of the skill category for which details are to
+	 *                        be fetched.
+	 * @return An HTTP response containing the list of GapDto objects representing
+	 *         skill details and the corresponding HTTP status code.
 	 */
 
 	@GetMapping("/fetch/{email}/{skillCategoryId}")
@@ -38,8 +44,21 @@ public class SkillSetController {
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		} catch (RecordNotFoundException e) {
 			log.info(e.getMessage());
-			return new ResponseEntity<>(list, HttpStatus.OK);
+			return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
 		}
 	}
 
+	
+	@GetMapping("/fetch/{email}")
+	public ResponseEntity<List<SkillGapDto>> findEmployeeSkills(@PathVariable String email)
+	{
+		List<SkillGapDto> list = null;
+		try {
+			list = skillSetservice.findEmployeeSkills(email);
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (RecordNotFoundException e) {
+			log.info(e.getMessage());
+			return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
+		}
+	}
 }
