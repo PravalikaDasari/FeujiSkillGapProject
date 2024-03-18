@@ -1,16 +1,12 @@
 package com.skillset.entity;
 
-
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,17 +26,13 @@ public class SkillEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "skill_id")
 	private int skillId;
-	
+
 	@Column(name = "skill_name")
 	private String skillName;
-	
-	//@OneToOne
-//	@JoinColumn(name ="reference_details_id")
+
 	@Column(name = "techinical_category_id")
 	private int techinicalCategoryId;
-	
-//	@OneToOne
-//	@JoinColumn(name ="reference_details_id")
+
 	@Column(name = "skill_category_id")
 	private int skillCategoryId;
 

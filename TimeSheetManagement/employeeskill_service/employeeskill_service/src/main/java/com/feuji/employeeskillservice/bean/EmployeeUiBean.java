@@ -21,7 +21,7 @@ public class EmployeeUiBean
 	private String competencyLevelId;
 	private String certification;
 	private String comments;
-	private String yearsOfExp;
+	private int yearsOfExp;
 	private String description;
 	private String isDeleted;
 

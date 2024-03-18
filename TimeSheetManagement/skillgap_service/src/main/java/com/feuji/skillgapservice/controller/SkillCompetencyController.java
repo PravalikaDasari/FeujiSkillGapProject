@@ -179,5 +179,7 @@ public class SkillCompetencyController {
 			return new ResponseEntity<>(employeeSkillsBySkillIds, HttpStatus.NOT_FOUND);
 		}
 	}
+	
+
 
 }

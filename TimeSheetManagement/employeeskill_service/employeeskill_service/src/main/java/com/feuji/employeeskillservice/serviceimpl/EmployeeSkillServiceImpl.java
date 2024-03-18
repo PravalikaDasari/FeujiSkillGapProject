@@ -184,7 +184,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 						employee.getFirstName() + " " + employee.getMiddleName() + " " + employee.getLastName());
 				empSkillBean.setCompetencyLevelId(Integer.parseInt(bean.getCompetencyLevelId()));
 				empSkillBean.setSkillTypeId(Integer.parseInt(bean.getSkillTypeId()));
-				empSkillBean.setYearsOfExp(Integer.parseInt(bean.getYearsOfExp()));
+				empSkillBean.setYearsOfExp(bean.getYearsOfExp());
 				empSkillBean.setIsDeleted(Byte.parseByte(bean.getIsDeleted()));
 				if (bean.getCertification().equals(CommonConstants.YES))
 				{
